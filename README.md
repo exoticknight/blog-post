@@ -1,6 +1,6 @@
 ﻿博客文章备份
 ============
-这个repo是用来备份我的[博客](exoticknight.ml)上的文章的，都是markdown格式。
+这个repo是用来备份我的[博客](http://exoticknight.ml)上的文章的，都是markdown格式。
 
 文章的内容可能有些许出入，但不影响阅读。
 
