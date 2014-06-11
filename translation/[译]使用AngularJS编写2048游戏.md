@@ -1,4 +1,4 @@
-[译]使用AngularJS编写2048游戏
+﻿[译]使用AngularJS编写2048游戏
 ================================
 > 原文[http://www.ng-newsletter.com/posts/building-2048-in-angularjs.html](http://www.ng-newsletter.com/posts/building-2048-in-angularjs.html)，考虑到排版和图片，内容稍有修改，对文章表达的意思并无太大影响。第一次渣翻长文，求翻译大大们拍砖和调教。
 
@@ -63,7 +63,7 @@ CSS3的使用让我们不但能够免于在CSS上搞动画的工作，而且能�
 
 ![Minification](http://www.ng-newsletter.com/images/2048/directory_structure.png)
 
-> 以下使用yeamon tool来构建项目的指南。如果你更新换自己动手，可以跳过依赖安装直接进入下一章节。
+> 以下使用yeamon tool来构建项目的指南。如果你更喜欢自己动手，可以跳过依赖安装直接进入下一章节。
 
 我们要先保证安装了`yeamon`才能在项目中使用。Yeamon依赖NodeJS和npm。NodeJS的安装并不在本文叙述的范围内但是在[NodeJS.org](http://nodejs.org)上有一个很好的指南。
 
