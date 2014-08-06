@@ -136,7 +136,7 @@ function g() {
 
 最后tree.html跳回一开始了，不知道是不是我太渣已经过时了……
 
-突然想到可能会看reference，于是访问了一下前一个地址：http://fun.coolshell.cn/n/20446，再回头访问tree.html，可以了。
+突然想到可能会看reference，于是访问了一下前一个地址：fun.coolshell.cn/n/20446，再回头访问tree.html，可以了。
 
 ##第6关
 
@@ -146,7 +146,7 @@ function g() {
 
 最后还是得靠自己画树……借助python代码将节点关系打出来。
 
-```language-python
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -240,7 +240,7 @@ Linux下执行：
 
 ##第7关
 
-好吧八皇后。说实话我从来都不太想在做类似的游戏时写算法，又不是什么ACM做题，唉。直接Google N皇后算法的python算法，解出N=9的所有解，然后
+好吧八皇后。说实话我从来都不太想在做类似的游戏时写算法，又不是什么ACM做题，唉。直接Google N皇后算法的python算法，解出N=9的所有解，352个解，是时候用暴力手段了。
 
 只是它这个code和通常表示八皇后解的数字不一样，正常是从上到下从左到右记录，它这个是从下到上从右到左记录……
 
@@ -248,7 +248,7 @@ Linux下执行：
 
 结合sha1解密验证的代码：
 
-```language-python
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -286,4 +286,6 @@ A=1, B=2, ... , Z=26
 
 答案是helloworld。
 
-啊终于通关了，看top100，排55。
+啊终于通关了，看top100，排53。
+
+本文被原作者指出会破坏游戏公平性，故在活动结束之后才重新发布……当时自己考虑不周给各位道歉了OTL。
