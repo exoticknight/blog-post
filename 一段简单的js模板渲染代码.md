@@ -1,7 +1,8 @@
-一段简单的js模板渲染代码
+﻿一段简单的js模板渲染代码
 ===============
 
-#前言
+![thumbnail](https://i.imgur.com/aWBIWv4.jpg)
+##前言
 在为一些页面写javascript的时候，发现经常出现如下的一种使用情况：通过AJAX请求数据，然后将数据填入HTML的模板中，最后将这段HTML插入或者替代到原网页中。
 
 看到这样的使用情况，有所了解的人可能说直接上jQuery啦，用`$.get`之类的函数取到数据后再各种DOM操作，easy啦～或者也有人说“嗯，这样的情况用AngrularJS或者React吧，国产的AvalonJS也不错哦”。嗯都说的没错，其实自己喜欢用哪个就用那个，顺手就好。
@@ -14,9 +15,9 @@
 
 于是，<del>勇敢的少年快起床找**</del>勇敢的少年来写原生js吧！
 
-#真实用例
+##真实用例
 
-##描述
+###描述
 在做某个博客的一个页面的时候，需要拉取github event来展示。然而因为博客本身搭建在github上，只依靠github提供的Jekyll引擎渲染，毫无后端可言，因此不能直接生成带有数据的页面。于是就只能捎上个AJAX库（墙裂推荐[jx](http://www.openjs.com/scripts/jx/)，谁用谁知道），在页面载入后再请求github的数据。
 
 看了看github api返回的内容，一个event的基本结构如下：
@@ -74,7 +75,7 @@
 
 其实HTML模板代码是怎样没所谓，留意其中用`{`和`}`括住的东西就是了。那是field name，`{field}`最终会被替换成数据。
 
-##当我只想先快速解决的时候……
+###当我只想先快速解决的时候……
 直接一个replace了事……
 
 ```javascript
@@ -88,7 +89,7 @@ var fillTemplate = function( template, field, data ) {
 
 <del>但是写起来快( ～'ω')～</del>
 
-##当我有时间折腾的时候……
+###当我有时间折腾的时候……
 来写一个**容易让别人使用**的js库吧。
 
 先来想想自己究竟想要怎么用这个库开始。
@@ -156,7 +157,7 @@ var templateText = str.split( splitRe )
 在匹配中也将field编成一个字典，用来存储数据。这里就是`{'filed1':'','field2':''}`。
 
 ```javascript
-while ( result = indexMark.exec( str ) ) {
+while ( result = indexRe.exec( str ) ) {
     this.data[result[1]] = '';
     fieldIndexs.push( result[1] );
 }
@@ -197,7 +198,7 @@ var simpleTemplate = function( templateStr , prefix, suffix ) {
     var fieldPrefix = prefix ? '\\' + prefix : '\\{',
         fieldSuffix = suffix ? '\\' + suffix : '\\}',
         splitRe = new RegExp( fieldPrefix + '\\s*\\w[\\w\\d]*\\s*' + fieldSuffix, 'g' ),
-        indexMark = new RegExp( fieldPrefix + '(\\s*\\w[\\w\\d]*\\s*)' + fieldSuffix, 'g' );
+        indexRe = new RegExp( fieldPrefix + '(\\s*\\w[\\w\\d]*\\s*)' + fieldSuffix, 'g' );
 
     var template = function( str ) {
         var templateText = str.split( splitRe ),
@@ -207,7 +208,7 @@ var simpleTemplate = function( templateStr , prefix, suffix ) {
         this.data = {};
 
         var result;
-        while ( result = indexMark.exec( str ) ) {
+        while ( result = indexRe.exec( str ) ) {
             this.data[result[1]] = '';
             fieldIndexs.push( result[1] );
         }
@@ -217,7 +218,7 @@ var simpleTemplate = function( templateStr , prefix, suffix ) {
             return templateText;
         }
 
-        this.getMarkIndexs = function() {
+        this.getFieldIndexs = function() {
             return fieldIndexs;
         }
     }
@@ -241,7 +242,7 @@ var simpleTemplate = function( templateStr , prefix, suffix ) {
     template.prototype.render = function() {
         var temp = [],
             text = this.getTemplateText(),
-            indexs = this.getMarkIndexs(),
+            indexs = this.getFieldIndexs(),
             i;
         
         // merge text array & data array
