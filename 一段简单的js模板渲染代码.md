@@ -1,4 +1,4 @@
-﻿一段简单的js模板渲染代码
+一段简单的js模板渲染代码
 ===============
 
 ![thumbnail](https://i.imgur.com/aWBIWv4.jpg)
@@ -143,7 +143,7 @@ window.simpleTemplate = simpleTemplate;
 
 假设模板为`<p>{field1}</p><p>{field1}</p><p>{filed2}</p>`。
 
-先将模板字符串使用field作为分隔符，使用`split()`来切分。（`split()`支持正则真是太好了）
+先将模板字符串使用field作为分隔符，使用`split()`来切分。<del>（`split()`支持正则真是太好了）</del>因为split函数在IE中有比较严重的问题，IE8中还没有改过来，所以在新版中只能换一个思路了，详情见下面的[更新](#update-2014-11-06)。
 
 则得到一个字符串数组`text = ["<p>","</p><p>","</p><p>","</p>"]`，这个作为最后合成所需的数组之一。
 
@@ -264,3 +264,20 @@ window.simpleTemplate = simpleTemplate;
 
 })( window, document )
 ```
+
+<a name="update-2014-11-06"></a>
+##2014.11.06更新
+
+在IE678中，split函数如果使用正则匹配作为参数，那么结果中的空字符会被“吞”掉。
+
+看代码
+
+```javascript
+','.split(/,/g).length === 2;  // true in non-IE
+
+','.split(/,/g).length === 0;  // true in IE678
+```
+
+那么很明显如果我使用split函数的话，如果模板中出现`{field}{field}`的话，`}{`中的空字符就会没了，模板文本和数据域的位置会打乱。
+
+于是就只能避免使用split函数，另辟蹊径。在解决这个问题的同时，我也在加上新的功能，简要来说就是支持列表循环和标志位了。最新的一个版本可以上[github项目](https://github.com/exoticknight/jswarehouse/tree/master/simpleTemplate)查看，算是本文中js的进化版。改进的思路我之后再写一篇博文来记录吧。
