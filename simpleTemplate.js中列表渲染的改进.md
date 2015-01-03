@@ -11,7 +11,7 @@ simpleTemplate.js中列表渲染的改进
 
 ##开始正文吧
 
-在[上一篇文章]()中，simpleTemplate.js已经得到了极大的改造，能够识别和渲染标志位和列表。在文章的最后提到了实际上列表的渲染还没有完成，充其量只是实现了一个循环而已，于是本文就来继续完善。
+在[上一篇文章](http://blog.e10t.net/implements-list-and-flag-in-simpletemplatejs/)中，simpleTemplate.js已经得到了极大的改造，能够识别和渲染标志位和列表。在文章的最后提到了实际上列表的渲染还没有完成，充其量只是实现了一个循环而已，于是本文就来继续完善。
 
 ##要解决什么问题
 
