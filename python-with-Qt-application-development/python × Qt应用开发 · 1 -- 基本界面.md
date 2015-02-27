@@ -7,7 +7,7 @@ python × Qt应用开发 · 1 -- 基本界面
 
 首先在python的工程里面建好工程结构。
 
-![工程结构](http://i.imgur.com/97PENH0.jpg)
+![工程结构](https://i.imgur.com/97PENH0.jpg)
 
 结构并非必要，只是个人习惯这样建而已。下面来解说一下。
 
@@ -17,9 +17,9 @@ python × Qt应用开发 · 1 -- 基本界面
 
 打开QtDesigner，会有一个自动弹出框，直接选择其中的“Main Window”，然后点create，一个窗口就出来啦。QtDesigner的主界面暂时没什么好说的，有经历过GUI设计的读者估计也很熟悉。
 
-![新建ui](http://i.imgur.com/LpPm5Sz.png)
+![新建ui](https://i.imgur.com/LpPm5Sz.png)
 
-现在我们先保存，文件名为`mainwindow.ui`，保存到`app.view`下。
+现在我们先保存，文件名为`ui_mainwindow.ui`，保存到`app.view`下。
 
 接下来是比较重要的一步，也是之后经常用到的步骤：将.ui文件编译成.py文件。
 
@@ -28,7 +28,7 @@ python × Qt应用开发 · 1 -- 基本界面
 pyside-uic mainwindow.ui -o mainwindow.py
 ```
 
-非常好理解，使用`pyside-uic`将`mainwindow.ui`编译，输出为`mianwindow.py`。
+非常好理解，使用`pyside-uic`将`ui_mainwindow.ui`编译，输出为`ui_mianwindow.py`。
 
 以后每一次更改了.ui文件，都要这样执行一下取得.py文件。我自己为了方便，写了一个批处理文件，要编译.ui文件的时候就可以直接拖到这个批处理文件上自动编译了。代码如下，保存为`ui2py.bat`。
 ```batchfile
@@ -37,15 +37,15 @@ pyside-uic %1 -o %~n1.py
 
 好的，现在我们已经拥有这个窗口的类的基本代码了。好奇的你可能想知道生成了什么。
 
-![基本界面代码](http://i.imgur.com/hbBWmnm.jpg)
+![基本界面代码](https://i.imgur.com/hbBWmnm.jpg)
 
 哇，一堆代码。都是编译生成的，无需做修改，只是要留意类名`Ui_MainWindow`，之后要使用这个类。
 
-OK下面来调用这个`Ui_MainWindow`类。在app包下新建`GUI.py`，写入以下代码。
+OK下面来调用这个`Ui_MainWindow`类。在app包下新建`MainWindow.py`，写入以下代码。
 
 ```python
 from PySide import QtCore, QtGui
-from view.mainwindow import Ui_MainWindow
+from view.ui_mainwindow import Ui_MainWindow
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -62,44 +62,44 @@ class MainWindow(QtGui.QMainWindow):
 import sys
 from PySide import QtCore, QtGui
 
-from app import GUI
+from app.MainWindow import MainWindow
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    window = GUI.MainWindow()
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())
 ```
 
-写过python代码的读者应该很熟悉这个判断的代码了，就是入口嘛。代码生成了一个变量名为`app`的`QApplication`实例，生成了`GUI.MainWindow`实例（自己写的），然后最后一句是运行app实例，等待其返回的状态码来关闭程序。实际上在程序运行的时候，代码是会卡在`app.exec_()`这里的，一旦执行了什么关闭程序的操作之后才会执行`sys.exit()`，所以这里并不是显示窗口之后立刻结束。
+写过python代码的读者应该很熟悉这个判断的代码了，就是入口嘛。代码生成了一个变量名为`app`的`QApplication`实例，生成了`MainWindow`实例（自己写的），然后最后一句是运行app实例，等待其返回的状态码来关闭程序。实际上在程序运行的时候，代码是会卡在`app.exec_()`这里的，一旦执行了什么关闭程序的操作之后才会执行`sys.exit()`，所以这里并不是显示窗口之后立刻结束。
 
 啊，终于可以运行了。
 
-![基本界面运行图](http://i.imgur.com/wpfSWcF.jpg)
+![基本界面运行图](https://i.imgur.com/wpfSWcF.jpg)
 
 啥都没有，正常，我们还没有加入控件呢。
 
 ##加入一些控件
 回到QtDesigner，从左边的`Widget Box`里面找到到`Label`、`Line Edit`、`Push Button`这三个widget，点击拖动到中间的窗口设计上。
 
-![放上了widget的设计](http://i.imgur.com/qUthBdW.jpg)
+![放上了widget的设计](https://i.imgur.com/qUthBdW.jpg)
 
 从右上角的`Object Inspector`中可以看到刚刚添加的widget，每一个都有自己唯一的标识，现在来把这些标识改成符合自己风格或者标准的新标识。双击标识或者点选widget之后在右下角的`Property Editor`里面的`objectName`进行修改。
 
-![Object Inspector修改](http://i.imgur.com/XDrxpTZ.jpg)
-![Property Editor修改](http://i.imgur.com/uO1DbF1.jpg)
+![Object Inspector修改](https://i.imgur.com/XDrxpTZ.jpg)
+![Property Editor修改](https://i.imgur.com/uO1DbF1.jpg)
 
 进行以下修改：
 
 * label -> labelTest
 * lineEdit -> lineEditTest
-* pushButton -> pushButtonTest
+* pushButton -> pushButtonTest / buttonTest
 
 可以看出是偏向“类型+自定义标识”的命名，这样修改的好处是使用的IDE有自动补全功能的话，只要输入例如`pushBu`，IDE就会自动列出所有的`pushButton`widget供选择。至于自定义标识单词首字母大写，则是个人习惯而已。
 
 保存&编译一下，回IDE运行查看。（以后不会再提醒保存&编译了）
 
-![带widget运行](http://i.imgur.com/NZ9ptnS.jpg)
+![带widget运行](https://i.imgur.com/NZ9ptnS.jpg)
 
 现在除了输入框可以输入、按钮可以按之外，没什么可以做的事，因为我们还没有指定这些操作会触发哪些事件。接下来就是比较难的部分：使用Qt的信号&槽机制。
 
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow):
 
 下面来运行一下，记得运行的文件是`main.py`。gif动态图展示。
 
-![连接了槽的运行](http://i.imgur.com/wqsveLg.gif)
+![连接了槽的运行](https://i.imgur.com/wqsveLg.gif)
 
 ##小记
 这篇博文实际涉及的东西不多，但是就是后面开发的基础，特别是signal&slot的概念，有不清楚的，尽量去问Google。本系列的重点也不在这些概念上，以后的博文就不再作解释了。

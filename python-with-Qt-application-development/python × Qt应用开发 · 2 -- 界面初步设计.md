@@ -1,89 +1,109 @@
-﻿python × Qt应用开发 · 2 -- 界面初步设计
+python × Qt应用开发 · 2 -- 界面初步设计
 ==================================
 14 Apr 04 17:05
 
 之前的一篇可以算是前置知识的快速介绍。从这篇开始就是正式地编写应用了。~~其实是因为之前我还没有想好要做什么应用。~~
 
-为了兼顾举举例子和真实性，选了这么一个应用：xx笔记。基本的功能如下：
+为了兼顾举举例子和真实性，选了这么一个应用：PQ笔记。基本的功能如下：
 
 * 笔记支持富文本粘贴
 * 按文件夹分类笔记
-* 笔记可以加上标签
 
 ##画出大概的样子
 先来一个大概的设计图。
 
-![设计图](http://i.imgur.com/tjRrER8.jpg)
+![设计图](https://i.imgur.com/uAJ6icH.png)
 
-就是一个规规矩矩的顶栏功能按键，左栏选目录，右栏浏览的结构。这个只是现阶段的大概构思，最终做出来不一定是这样的，有可能在一些细节上会有所更改，但是整体界面几乎都可以定下来了。
+就是一个规规矩矩的三栏布局，左边是笔记本的目录树，中间是文档列表，右边是文档内容。这个只是现阶段的大概构思，最终做出来不一定是这样的，有可能在一些细节上会有所更改，但是整体界面几乎都可以定下来了。
 
-打开`mainwindow.ui`，从`Widget Box`里拉出`Tab Widget`，这个就是标签页控件了。先来修改好属性。
+打开`ui_mainwindow.ui`，从`Containers`里拉出三个`Widget`，分别命名为`widgetLeft`、`widgetMiddle`和`widgetRight`。这就是左中右三栏的容器。
 
-第一个修改的是标签页的标识，修改成`tabFolder`和`tabTag`。接着是标签的显示名字，**注意这里是不能直接修改标签的显示名字的**。要这样修改，先点击某个标签页使其激活，然后在属性的`currentTabText`里面修改。
+在左边栏中拖入一个`pushButton`和一个`treeView`，分别对应设计图上的两个控件。注意，如果拖放位置正确（也就是QtDesigner知道你要将控件放进左边栏里面），你会看到左边栏`widgetLeft`会变暗了。
 
-![修改标签页名字](http://i.imgur.com/3mjTd6W.jpg)
+![拖放正确](https://i.imgur.com/Izn7dD6.png)
 
-注意在QTabWidget所属的属性下有两个有趣的属性`documentMode`和`movable`，都勾上。设置了`documentMode`表示标签页不会渲染控件的边框，这很有用因为里面的树状列表控件会占据整个标签页，这样不会出现双重边框；`movable`是指标签可以自由移动排序。
+对着左边栏空白处点击右键，依次选择`布局` -> `垂直布局`。
 
-![标签widget属性](http://i.imgur.com/fgKX8Ju.jpg)
+![选择垂直布局](https://i.imgur.com/rvWMn63.png)
 
-继续，拉出widget`Tree View`（树状列表视图），直接拖到刚才的标签页控件上，你会看到标签页的内部会很明显变暗了，说明你即将`Tree View`交给标签页来管理（或者说作为其子控件），并修改标识为`treeViewFolder`。
+可以看到控件非常听话地从上到下排列好了。这里为widget中的控件快速设定了一个布局，相当于告诉widget中的控件该如何显示自己。
 
-![树状列表在标签页中]()
+注意，这个"布局"并不是widget中的属性，而是独立的另一个类`QLayout`及其子类的实例。在对象查看器中点选`widgetLeft`后在下面的属性编辑器中可以看到有一栏`Layout`，这个才是控件们服服帖帖的原因。只不过，当为一个`widget`选择了布局之后，QtDesigner自动给这个widget增加了一个布局，然后将widget里面的子控件加入到布局中，于是子控件们都知道应该如何显示了。
 
-现在，在标签页的空白出点击右键，依次选`Lay out`->`Lay Out Vertically`，然后可以看到`Tree View`立刻就“听话”地调整好位置了。实际上这里我们给空间应用了一个“自动布局”，不急，在后面会有讲解，这里先这样用。一般来说，`Tree View`周围会出现一些边距。这里要这样修改：先在`Object Inspector`里点选相应的widget，然后在`Property Editor`里面找到`Layout`，将带有“Margin”字样的属性值全改为0就OK了。
+![widget中的layout](https://i.imgur.com/PpYcKIZ.png)
 
-![设置布局](http://i.imgur.com/qMv56yL.jpg)
+同理，在中间控件`widgetMiddle`中放入一个`LineEdit`和一个`ListView`，在右边控件`widgetRight`中放入`TextEdit`，并且设置好布局。
 
-![修改边框](http://i.imgur.com/nJICnLm.jpg)
+现在使用快捷键`Ctrl + r`预览，发现拉伸窗口的时候，里面的三栏控件没有任何反应，这可不是想要的效果。
 
-现在做另外一个叫“标签”的标签页，只是里面放的widget不是`Tree View`而是`List View`，步骤都是一样的不再阐述。
+![预览1](https://i.imgur.com/NTwV9wH.png)
 
-接着是编辑的界面，现阶段暂时先使用`Text Edit`这个widget。这个widget最起码是具备有接收富文本粘贴的功能。
+注意整个窗口其实也是一个widget，同样需要为其设置布局。
 
-现在把两个widget（`Tab Widget`和`Text Edit`）对齐一下，按`Ctrl+R`快速预览一下。发现在widget都是固定的，调整窗口大小的时候widget没有自动调整。为了能让widget适应窗口大小的调整，于是就要用上面所说的自动布局了。
+![窗口layout](https://i.imgur.com/XB2vSJm.png)
+
+再预览，出现一个新问题：三个栏不能各自调整大小。
+
+![预览2](https://i.imgur.com/XsXU5ed.png)
+
+要实现这个功能需要另外一种布局管理，分裂器（QSplitter）。分裂器允许元素调整各自的大小。
+
+先打破布局。
+
+![打破布局](https://i.imgur.com/24ng0C0.png)
+
+按着ctrl选择三个分栏widget，注意是分栏widget，再在其中一个widget的空白处点击右键，在布局中可以看到有`使用分裂器水平布局`。
+
+![应用分裂器](https://i.imgur.com/jFmH6nh.png)
+
+最后为窗口应用垂直布局就可以了。预览的时候当鼠标移动到分栏控件之间会发现可以调整大小了，同时调整窗口也能影响到三个分栏的大小。
+
+> 从实际来说，调整窗口的大小的时候，更多是希望调整右边栏即文档显示栏的大小。
+
+QSplitter还能设置一些细节。
+
+找到`QSplitter`的属性：
+
++ orientation，控件排列方向，水平还是垂直
++ opaqueResize，是否实时显示调整
++ handleWidth，调整条的宽度
++ childrenCollapsible，控件调整成过小时是否会隐藏
+
+似乎没有什么可以用的。
+
+然而，问题的解决方法却不在`QSplitter`上，而在其子组件上。
+
+实际上，几乎所有的widget，都有一个`sizePolicy`的属性，而在此属性中，有子属性`Horizontal Stretch`和`Vertical Stretch`，对应中文`水平伸展`和`垂直伸展`，决定水平和垂直的缩放比例。
+
+![sizePolicy](https://i.imgur.com/47JsPlH.png)
+
+在属性编辑器中，可以看到`水平伸展`的值默认为0，也就是左栏：中栏：右栏 = 0：0：0，现在将右栏的`水平伸展`值设为1，也就是左栏：中栏：右栏 = 0：0：1。
+
+预览一下，效果就出来了。
+
+![预览3](https://i.imgur.com/S21DeGJ.gif)
+
+原理应该是这样的，在窗口缩放的时候，默认的配置是 0：0：0，表示变化被平均分配到两个组件上了。而修改后子组件们根据已经设定好的比例 0：0：1，所有的因窗口缩放而引起的大小变化**全部**被分配到文档编辑组件上了。
 
 ##布局管理（Layout Management）
-自动布局widget可以在`Widget Box`里面看到，提供的有四个布局：
+布局可以在`Widget Box`里面看到，提供的有四个布局：
 
 * Vertical Layout
 * Horizontal Layout
 * Grid Layout
 * Form Layout
 
-分别是垂直布局、水平布局、网格布局和表单布局。当然还有另外的自动布局，但是这四个基本能满足普通需要了。
+分别是垂直布局、水平布局、网格布局和表单布局。当然还有另外的自动布局，但是这四个基本能满足普通需要。
 
-那这些布局怎么用呢？简单来说，你只要将widget放在layout中，layout就能将这些widget按照一定的规则自动管理其大小和位置。举个例子，水平布局，顾名思义就是将widget水平放置。下面结合实践来加深理解。
+垂直/水平布局不用解释了。网格布局是类似表格，一个控件占据一个单元格位置；表单布局是类似平常表单，从上到下排成多行，每行分两栏，左边放标签控件，右边放输入框控件。
 
-拖出一个`Horizontal Layout`，分别将之前的`Tab Widget`和`Text Edit`widget放进去，这里最好先放`Text Edit`，免得被`Tab Widget`中的其他布局所影响。放的时候注意，如果布局的边缘出现像下图绿色框中的蓝色边框，才说明放的位置是正确的。
+##菜单
+在新建一个窗体的时候，QtDesigner就已经为窗体添加上了`QMenuBar`，在窗体的标题栏下面可以看到一个经典的菜单栏，上面有`在这里输入`字样。只要双击并填上你希望显示的菜单名字，QtDesigner会自动生成一个菜单，在下拉列表上继续双击`在这里输入`将会自动生成`QAction`。`QAction`才是真正代表着菜单里的某个动作。
 
-![正确位置出现蓝色条](http://i.imgur.com/lgfq411.jpg)
+在下拉菜单里面，还能看到一个`添加分隔符`，是添加一个分割线的意思。当生成了一个`QAction`之后，可以看到右边有一个类似加号的图标，是将当前`QAction`转化为`QMenu`的意思，换句话说可以生成子级菜单。子级菜单的操作跟上面描述的菜单操作一模一样。
 
-放好widget之后可以在属性里面调节layout中widget的外边距，注意是widget的外边距而不是layout的外边距。其他的还有`layoutSpacing`，widget之间的距离；`layoutStretch`，widget之间的缩放比例。
+![菜单设计](https://i.imgur.com/9MbfQzg.png)
 
-然而现在还不能达到期望的效果，为什么呢？我是故意这样做的，目的是为了展示这些布局的另外一个特点：可以嵌套。
+另外给各个action对象修改好名字，以供日后调用。
 
-现在其实你可以将用layout包围（或者说管理）的widget们看作一个组，但是这个组跟窗口的关联是没有的，也就是说窗口在调整大小的时候并不会引起这个组的变化。然而你是否注意到在右上角`Object Inspector`里面，整个窗口`MainWindow`的子对象是一个叫`centralwidget`的widget，这个widget是包含我们之前摆弄过的`Tab Widget`等widget的。而从文字前面的图标可以看出这个widget并没有应用到任何布局。很自然地想到，为这个widget设定了布局那么就能将窗口的大小关联到里面的widget/widget组上了。
-
-![centralwidget属性](http://i.imgur.com/H828eJk.jpg)
-
-为了能更清楚地看到layout可以嵌套的特性，可以拉出一个`progressBar`，然后在窗体的空白位置点击右键（这里已经暗示了你整个窗体的空白位置实际就是`centralwidget`），像之前选择布局那样选择，这次选择垂直布局。哦，widget们立刻就垂直排好了。
-
-![最终布局图](http://i.imgur.com/qMv56yL.jpg)
-
-再来看看`Object Inspector`，很明显地是一个垂直布局包含了一个水平布局和一个`progressBar`。对于上一级的垂直布局来说，水平布局跟一般的widget没什么分别。
-
-![布局嵌套查看](http://i.imgur.com/3yzaULJ.jpg)
-
-现在预览一下，调整窗口大小的时候，里面的widget也能够跟着放大和缩小了。
-
-还有一个小问题，左边的标签页和右边的编辑区在放大缩小的时候好像都是同样大小的。很多时候调整大小，就是因为编辑区太小了，左边的标签页我们不希望会跟着放大。实现这个有几种方法，最简单的一种是修改标签页`sizePolicy`属性下的`Horizontal Policy`为Preferred，而`Text Edit`的同样属性则设置为Expanding，如下图。这样做，在水平方向的缩放上，同属一个layout中的widge，`Horizontal Policy`设置为Preferred的widget会将放大“让位”给设置为Expanding的widget。
-
-![sizePolicy属性设置](http://i.imgur.com/5RHdNSs.jpg)
-
-最终效果。
-
-![最终效果](http://i.imgur.com/aqR1Vta.gif)
-
-##小结
-博文中的流程尽量描述得比较详细就是希望有一些需要的是经验而不是教程的操作能够尽早传达给读者。但是，这篇博文并不能覆盖到所有的界面设计，读者还是需要自己去做各种的实践。在之后的博文里面，我在开发的时候如果遇到比较困难的地方，会研究好之后再详细解释的。
+![对象名称修改](https://i.imgur.com/cRj9IL6.png)
