@@ -11,6 +11,8 @@
 
 根据之前博文的要求，如果编写文件夹列表这个widget，我们考虑用`Tree View`然后自己编写model会比较好，因为文件夹本身就天然具备树的特征。另外文件夹还允许重名，我们不能只根据文件夹名来标识，而是需要另外的唯一标识，这就暗示了一个树节点所包含的数据是多个的了，最起码包含了节点的名称和节点的标识，单单`QTableWidgetItem`是比较难满足要求的。
 
+通过只使用Qt提供给我们的'view'
+
 ~~好像没怎么说为什么MVC大法好的样子= =b~~
 
 ##实现一个简单的model
@@ -149,7 +151,7 @@ class TreeModel(QtCore.QAbstractItemModel):
         if not index.isValid():
             return QtCore.Qt.NoItemFlags
         
-        return QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
+        return QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable
 
     def headerData(self, section, orientation, role=None):
         """ IMPLEMENT """
@@ -192,7 +194,7 @@ Don't panic，待我慢慢解释。
 
 > flags(self, index)
 
-概括来说，这个函数可以设定节点在view中的表现方式。从它需要返回的常量的名字可以看得出来，节点是有多种组合方式的，这里的代码表示了节点是“可选择的”（Selectable）和“可交互的”（Enabled）。
+概括来说，这个函数可以设定节点在view中的表现方式。从它需要返回的常量的名字可以看得出来，节点是有多种组合方式的，这里的代码表示了节点是“可选择的”（Selectable）、“可交互的”（Enabled）和“可编辑的”（Editable）。
 
 [常量列表](http://qt-project.org/doc/qt-4.8/qt.html#ItemFlag-enum)：
 
@@ -254,7 +256,7 @@ Don't panic，待我慢慢解释。
 
 至此model基本实现了，最后是使用。
 
-返回`GUI.py`，在`MainWindow`类中加入：
+返回`MainWindow.py`，在`MainWindow`类中加入：
 
 ```python
     def buildFolderTreeView(self):
