@@ -1,4 +1,4 @@
-﻿python × Qt应用开发 · 3 -- MVC中model的基本实现
+python × Qt应用开发 · 3 -- MVC中model的基本实现
 ==============================
 14 Apr 1214:14
 
@@ -11,12 +11,8 @@
 
 根据之前博文的要求，如果编写文件夹列表这个widget，我们考虑用`Tree View`然后自己编写model会比较好，因为文件夹本身就天然具备树的特征。另外文件夹还允许重名，我们不能只根据文件夹名来标识，而是需要另外的唯一标识，这就暗示了一个树节点所包含的数据是多个的了，最起码包含了节点的名称和节点的标识，单单`QTableWidgetItem`是比较难满足要求的。
 
-通过只使用Qt提供给我们的'view'
-
-~~好像没怎么说为什么MVC大法好的样子= =b~~
-
 ##实现一个简单的model
-上一篇博文全程在用QtDesigner，这次就转到python代码上了。在app包下新建model包，再在里面新建`folderTreeModel.py`。
+上一篇博文全程在用QtDesigner，这次就转到python代码上了。在app包下新建model包，再在里面新建`treeModel.py`。
 
 接下来……怎么写啊……
 
@@ -63,14 +59,14 @@ class GenericNode(object):
 接下来是数据的访问。
 
 ```python
-    def data(self, data=None):
-        if data is None:
-            return self._data
-        else:
-            self._data = data
+    def data(self):
+        return self._data
+
+    def setData(self, value):
+        self._data = value
 ```
 
-这里做了一个有趣的事情：将访问和更新放在同一个函数内，区别的依据是是否给函数传参数。
+getter、setter，没什么值得解释。
 
 再来是对查询节点关系的回应。
 
@@ -91,9 +87,10 @@ class GenericNode(object):
 
 都是非常简单的函数。`parent(self)`和`child(self, row)`分别是返回父节点和和指定的子节点（对应着上面的图可以明显看出应该通过数组方式访问子节点）。`childCount(self)`是返回子节点长度以便能遍历子节点，`row(self)`则是查询本节点在兄弟节点中的位置。
 
-最后加入一个函数来跟其他类型的节点区别一下，因为其他节点将会继承自这个类。
+最后加入一个属性来跟其他类型的节点区别一下，因为其他节点将会继承自这个类。
 
 ```python
+    @property
     def type(self):
         """ custom function """
         return "generic"
@@ -102,20 +99,27 @@ class GenericNode(object):
 接着是特殊节点。
 
 ```python
-class FolderNode(GenericNode):
+class NotebookNode(GenericNode):
+    @property
     def type(self):
         """ OVERRIDE """
-        return "folder"
+        return "notebook"
+
+class ChapterNode(GenericNode):
+    @property
+    def type(self):
+        """ OVERRIDE """
+        return "chapter"
 ```
 
-继承的同时重写了`type(self)`函数来区分不同的节点，暂时不去写更详细的函数。
+继承的同时重写了`type`属性来区分不同的节点，暂时不去写更详细的函数。
 
 节点部分就基本写好了，接下来是模型结构部分。基本框架的代码如下。
 
 ```python
-class TreeModel(QtCore.QAbstractItemModel):
+class CatalogTreeModel(QtCore.QAbstractItemModel):
     def __init__(self, root=None, parent=None):
-        super(TreeModel, self).__init__(parent)
+        super(CatalogTreeModel, self).__init__(parent)
 
         self._rootNode = GenericNode(None) if root is None else root
 
@@ -176,7 +180,7 @@ class TreeModel(QtCore.QAbstractItemModel):
 ```
 
 Don't panic，待我慢慢解释。
-根据官方文档，继承`QtCore.QAbstractItemModel`和init函数没什么好说的，注意到其他函数里面，我都注释有`IMPLEMENT`字眼，已经明显地说明这些函数需要重写实现的了。
+根据官方文档，继承`QtCore.QAbstractItemModel`和init函数没什么好说的，注意到其他函数里面，都注释有`IMPLEMENT`字眼，已经明显地说明这些函数需要重写实现的了。
 
 > rowCount(self, parent)
 
@@ -249,7 +253,7 @@ Don't panic，待我慢慢解释。
         elif role == QtCore.Qt.DecorationRole:
             pass
         elif role == QtCore.Qt.ToolTipRole:
-            return node.type()
+            return node.type
 ```
 
 要做的事情就是先判断一下`index`是否有效，然后就判断`role`的值，返回不同的数据。这里是名字显示数据data，而悬浮提示则是节点的类型。
@@ -259,34 +263,33 @@ Don't panic，待我慢慢解释。
 返回`MainWindow.py`，在`MainWindow`类中加入：
 
 ```python
-    def buildFolderTreeView(self):
-        root = folderTreeModel.GenericNode("root")
+    def buildCatalog(self):
+        root = treeModel.GenericNode("root")
 
-        folder1 = folderTreeModel.FolderNode("folder1", root)
-        folder2 = folderTreeModel.FolderNode("folder2", folder1)
+        notebook1 = treeModel.NotebookNode("NotebookNode1", root)
+        chapter2 = treeModel.ChapterNode("ChapterNode2", folder1)
 
-        folder3 = folderTreeModel.FolderNode("folder3", root)
-        folder4 = folderTreeModel.FolderNode("folder4", folder3)
+        notebook3 = treeModel.NotebookNode("NotebookNode3", root)
+        chapter4 = treeModel.ChapterNode("ChapterNode4", notebook3)
 
-        self._folderModel = folderTreeModel.TreeModel(root)
+        self._folderModel = treeModel.CatalogTreeModel(root)
 
-        self.ui.treeViewFolder.setModel(self._folderModel)
-        self.ui.treeViewFolder.expandAll()
+        self.ui.treeViewCatalog.setModel(self._folderModel)
+        self.ui.treeViewCatalog.expandAll()
 ```
 
 做的事情很简单，使用之前编写的代码建一棵树，结构是：
 
-> folder1
->> older2
-
-> folder3
->> folder4
+notebook1
+┗chapter2<br>
+notebook3
+┗chapter4
 
 把根节点交给model，使用`setModel`函数将model绑定到view上。为了好看把树全部展开。
 
 最后在`__init__`函数中调用这个函数，运行。
 
-![最终运行图](http://i.imgur.com/3hKlXQ5.jpg)
+![最终运行图](https://i.imgur.com/PICCd6F.png)
 
 ##小结
 终于结束了本博文，使用MVC模式的代码也能工作了。回想文章开头的“MVC大法好”，这句话的可是有前提的，就是能理解好概念和驾驭到代码。

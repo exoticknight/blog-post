@@ -9,58 +9,113 @@ python × Qt应用开发 · 4 -- 数据库设计
 
 在python，只需要加上`import sqlite3`语句就能使用SQLite，方便至极。
 
-##文件夹
-文件夹的数据结构是一棵树，叶子节点是一篇篇的笔记文档。考虑使用一个名为`folder`的表来保存文件夹数据，一个名为`document`的表来保存笔记文档。
+##笔记本
+笔记本的数据结构是一棵棵树，叶子节点是章节。考虑使用一个名为`notebook`的表来保存笔记本数据，一个名为`chapter`的表来保存章节。
 
 打开数据库设计工具，这里选用了一个在线的工具[WWW SQL Designer](http://ondras.zarovi.cz/sql/demo/)。画出以下设计图。
 
-![数据库设计图1](http://i.imgur.com/FFHtR5P.jpg)
+![数据库设计图1](https://i.imgur.com/9HDCvP7.png)
 
-其中表`folder`中，字段`id`是文件夹的id，字段`fid`是父文件夹的id，字段`name`是文件夹名，字段`remark`则是备注。表`document`中，字段`fid`是父文件夹id，字段`title`是笔记文档的标题，字段`content`是笔记内容，字段`last_update`是最后更新时间，字段`tags`则是标签。而由于在所有表中的`id`字段都是主键，因此这样就能确定好树的结构了。
+表`notebook`
 
-##标签
-仔细思考了一下，标签和笔记文档是多对多的关系，使用关系型的数据库要完整地表达的确比较困难。暂时的解决方法如下：在表`document`中增加一个字段`tags`，其中的数据是以`,`分隔的标签id；表`tag`保存标签数据，表`t2d`保存标签到笔记文档的单向关系。
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>name</td>
+<td>笔记本名称</td>
+</tr>
+</tbody>
+</table>
 
-表`t2d`中，字段`tid`为标签id，字段`did`为文档id，同时加上index关系。
+表`chapter`
 
-如此一来，在读取某篇笔记的时候，可以通过解释`tags`字段取出标签。而在使用标签搜索笔记的时候就使用表`t2d`，利用上数据库的查找优势。考虑到标签的作用多数是用来作为查找笔记的关键字，这样的解决方法应该是比较合理的。
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>name</td>
+<td>章节名称</td>
+</tr>
+<tr>
+<td>nid</td>
+<td>所属笔记本id，外键</td>
+</tr>
+</tbody>
+</table>
 
-加上标签后的设计图如下：
+表`document`
 
-![数据库设计图2](http://i.imgur.com/qui7MU3.jpg)
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>cid</td>
+<td>章节id，外键</td>
+</tr>
+<tr>
+<td>title</td>
+<td>文档标题</td>
+</tr>
+<tr>
+<td>content</td>
+<td>文档内容</td>
+</tr>
+<tr>
+<td>last_update</td>
+<td>文档最后更新时间</td>
+</tr>
+</tbody>
+</table>
 
 然后使用输出功能输出sql脚本文件，注意这里的代码在我的电脑上是能够运行的，但不一定能够在你的电脑上运行：
 
 ```sql
-CREATE TABLE folder (
-id INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL  DEFAULT 'New Folder',
-remark TEXT DEFAULT NULL,
-fid INTEGER NOT NULL  DEFAULT 0
+CREATE TABLE 'chapter' (
+'id' INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
+'name' TEXT NOT NULL  DEFAULT 'new group',
+'nid' INTEGER NOT NULL  DEFAULT 0 REFERENCES 'notebook' ('id') REFERENCES 'notebook' ('id')
 );
 
-CREATE TABLE document (
-id INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
-fid INTEGER NOT NULL  DEFAULT 0 REFERENCES folder (id),
-title TEXT NOT NULL  DEFAULT 'New document',
-content TEXT DEFAULT NULL,
-last_update NUMERIC NOT NULL ,
-tags TEXT DEFAULT NULL
+CREATE TABLE 'document' (
+'id' INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
+'cid' INTEGER NOT NULL  DEFAULT 0 REFERENCES 'chapter' ('id') REFERENCES 'chapter' ('id'),
+'title' TEXT NOT NULL  DEFAULT 'New document',
+'content' TEXT DEFAULT NULL,
+'last_update' NUMERIC NOT NULL
 );
 
-CREATE TABLE t2d (
-id INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
-tid INTEGER NOT NULL  REFERENCES tag (id),
-did INTEGER NOT NULL  REFERENCES document (id)
+CREATE TABLE 'notebook' (
+'id' INTEGER NOT NULL  DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'name' TEXT NOT NULL  DEFAULT 'new notebook'
 );
-
-CREATE TABLE tag (
-id INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL  DEFAULT 'tag'
-);
-
-CREATE INDEX t2dindex ON t2d (tid, did);
-
 ```
 
 ##生成数据库

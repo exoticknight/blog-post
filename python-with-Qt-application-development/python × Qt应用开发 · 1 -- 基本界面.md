@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
 直接Google关键字`QLineEdit`（widget前都会加上一个Q），从官方文档中可以查出在输入框文字变化的时候会emit一个`textEdited`的signal。
 
-在`GUI.py`里简单实现一下。
+在`MainWindow.py`里简单实现一下。
 
 ```python
 class MainWindow(QMainWindow):
