@@ -123,7 +123,7 @@ self.ui.verticalLayoutRight.addWidget(QtGui.QSizeGrip(self), 0, QtCore.Qt.AlignB
 
 在`MainWindow`类下，直接贴入以下函数即可：
 
-···language-python
+```language-python
 def mousePressEvent(self, event):
     """ override mouse press event """
     self._postion = event.globalPos() - self.pos()
