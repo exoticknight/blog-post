@@ -1,4 +1,4 @@
-radioit计划——动画广播辅助脚本radioitScript
+radioit计划——动画广播辅助脚本radioit-script
 ===========================
 
 在[这篇文章](http://blog.e10t.net/how-to-save-internet-radio/)的实践基础和[这篇文章](http://blog.e10t.net/append-a-python-script-for-last-post-about-saving-internet-radio/)的代码基础上，我重新将代码整理一下，并添加了一些功能，将原来三个脚本的共同点提炼，写成一个网络广播查看和获取的框架。继而在这个框架上，写出对应三个广播站的脚本的ver 2.0。
@@ -29,7 +29,7 @@ python www.py xxx -y zzz
 
 就是类似`git`命令行的那样，`argparse`库非常给力地支持这种方法。
 
-重点是使用`add_subparsers`函数和`add_parser`函数，详细使用看[文档](https://docs.python.org/2/library/argparse.html)和[github上的代码](https://github.com/exoticknight/radioitScript/blob/master/_radioit_script_template.py)。
+重点是使用`add_subparsers`函数和`add_parser`函数，详细使用看[文档](https://docs.python.org/2/library/argparse.html)和[github上的代码](https://github.com/exoticknight/radioit-script/blob/master/_radioit_script_template.py)。
 
 多亏了能够这样嵌套命令，即使再多的功能也能变得清晰分明。
 
