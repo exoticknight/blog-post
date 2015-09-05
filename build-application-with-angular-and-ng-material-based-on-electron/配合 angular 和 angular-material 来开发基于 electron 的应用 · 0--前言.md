@@ -1,4 +1,4 @@
-配合angular和angular-material来开发基于electron的应用 · 0--前言
+配合 angular 和 angular-material 来开发基于 electron 的应用 · 0--前言
 ===========================================
 
 ##Electron

@@ -1,4 +1,4 @@
-配合angular和angular-material来开发基于electron的应用 · 2--node 库的使用和抓取代码的编写
+配合 angular 和 angular-material 来开发基于 electron 的应用 · 2--node 库的使用和抓取代码的编写
 =====================================
 
 ![thumbnail](https://i.imgur.com/kvb5CTf.png)

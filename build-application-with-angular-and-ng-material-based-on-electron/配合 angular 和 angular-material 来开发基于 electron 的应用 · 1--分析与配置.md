@@ -1,9 +1,9 @@
-配合angular和angular-material来开发基于electron的应用 · 1--分析与配置
+配合 angular 和 angular-material 来开发基于 electron 的应用 · 1--分析与配置
 =====================================
 
 ![thumbnail](https://i.imgur.com/kvb5CTf.png)
 
-> [应用github地址](https://github.com/radioit/radioit-desktop)。github代码和文章代码并不同步，用作预览和PR。
+> [应用github地址](https://github.com/radioit/radioit-desktop)。github 代码和文章代码并不同步，用作预览和 PR。
 
 ##目标分析
 
