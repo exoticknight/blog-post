@@ -9,7 +9,7 @@ Electron 是什么？它之前的名字是 Atom Shell，是 Github 开发的结�
 
 那跟平常的桌面应用构建，使用 Electron 又有什么优势呢？
 
-普通的桌面应用构建，比较成熟的语言不外乎 C/C++、Java、C#、Python 等。然而 C/C++ 易学难精，即使其 GUI 框架有 MFC、Qt、KDE 等众，也是极难快速开发；Java 的 GUI 烂得不提也罢；C# 极有可能成为以后霸主，然而还在跨平台表现上有所欠缺，GUI 表现力不足；Python则是个人喜好关系顺带一提，其实很少作为 GUI 主力语言被使用。（当然你可以阅读本人的另一个[有关 python 和 Qt 构建桌面应用的系列][1]）
+普通的桌面应用构建，比较成熟的语言不外乎 C/C++、Java、C#、Python 等。然而 C/C++ 易学难精，即使其 GUI 框架有 MFC、Qt、KDE 等众，也是极难快速开发；Java 的 GUI 烂得不提也罢；C# 极有可能成为以后霸主，然而还在跨平台表现上有所欠缺；Python则是个人喜好关系顺带一提，其实很少作为 GUI 主力语言被使用。（当然你可以阅读本人的另一个[有关 python 和 Qt 构建桌面应用的系列][1]）
 
 Electron 则是使用了 Javascript 作为主力语言，并且为其加上了原生支持 html5 和 CSS3 的浏览器。从 GUI 构建来说，使用 html 和 css 的网页构建显然更加简单，成熟的工具和技术数不胜数；而作为桌面应用着重依赖的 IO、进程和网络通信模块等则由支持 ES6 的 io.js 提供，这样前端后端均采用 Javascript 语言，大大降低技术复杂性。
 
@@ -17,13 +17,13 @@ Electron 则是使用了 Javascript 作为主力语言，并且为其加上了�
 
 ##与NW.js（旧名node-webkit）的异同
 
-如果你有经常关注前端的消息，那么一定听说过一个国人开发的 GUI 框架：node-webkit。然后一看到Electron，就会皱皱眉头：这不就是node-webkit嘛！
+如果你有经常关注前端的消息，那么一定听说过一个国人开发的 GUI 框架：node-webkit。然后一看到 Electron，就会皱皱眉头：这不就是 node-webkit 嘛！
 
 然而，Electron 和 node-webkit 并不一样，其 github 项目上有详细的对比，[链接][2]。
 
-就个人理解来说，NW.js 偏向网页主导，是一个加上了 node.js 的浏览器；Electron 则是 javascript主导，是 io.js 加上了一个 chromium。
+就个人理解来说，NW.js 偏向网页主导，是一个加上了 node.js 的浏览器；Electron 则是 javascript 主导，是 io.js 加上了一个 chromium。
 
-> 准确来说，Electron 只是选择了网页作为 GUi，并非为 GUI 绑定了 javascript。在 Electron 文档的 [Quick start][2] 中很明确地指出“It doesn't mean Electron is a JavaScript binding to GUI libraries. Instead, Electron uses web pages as its GUI, so you could also see it as a minimal Chromium browser, controlled by JavaScript.”
+> 准确来说，Electron 只是选择了网页作为 GUI，并非为 GUI 绑定了 javascript。在 Electron 文档的 [Quick start][2] 中很明确地指出「It doesn't mean Electron is a JavaScript binding to GUI libraries. Instead, Electron uses web pages as its GUI, so you could also see it as a minimal Chromium browser, controlled by JavaScript.」
 
 在听说了 node-webkit 之后，我曾经上手把玩了一下，当时也是惊讶于其结合了浏览器内核而得到的强大表现力。因为自己在前端方面有一点技术，所以在编写界面的过程中感觉非常舒服。不过我也留意到其在软件方面的能力明显有比较大的欠缺，除了能读写文件外似乎没有什么亮点。（当然不排除在改名为 NW.js 后会加入了更多功能的可能性）
 
