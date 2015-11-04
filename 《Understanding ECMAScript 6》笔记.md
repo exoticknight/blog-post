@@ -3,6 +3,8 @@
 
 > 在线免费阅读：https://leanpub.com/understandinges6/read/
 
+> 部分代码使用原书，代码版权归原书所有
+
 <a name="catalogue"></a>
 
 1. [块级绑定（Block Bindings）](#block-bindings)
@@ -75,7 +77,7 @@ sticky，部分浏览器早就实现了
 <a name="template-strings"></a>
 ##字符串模板（template strings）[↑](#catalogue)
 
-```language-javascript
+```javascript
 let a = 1
 let b = 2
 let s = `${a} ${a + b}`  // '1 3'
@@ -84,7 +86,7 @@ let s = `${a} ${a + b}`  // '1 3'
 <a name="tagged-templates"></a>
 ##标签模板（tagged templates）[↑](#catalogue)
 
-```language-javascript
+```javascript
 let a = 1
 function tag ( strings, ...values ) {
   console.log( strings )
@@ -101,7 +103,7 @@ let s = tag`a ${a}`  // 'a 1'
 
 ###默认参数
 
-```language-javascript
+```javascript
 function foo ( bar = 1 ) {
   console.log( bar )
 }
@@ -109,7 +111,7 @@ function foo ( bar = 1 ) {
 
 ###剩余参数
 
-```language-javascript
+```javascript
 function foo ( bar, ...rest ) {  // ✓
   ;
 }
@@ -123,7 +125,7 @@ function foo ( bar, ...rest, last ) {  // ×
 
 各种例子
 
-```language-javascript
+```javascript
 function doSomething() {
     // ...
 }
@@ -159,7 +161,7 @@ console.log( ( new Function() ).name );     // "anonymous"
 
 避免了很多使用 `new` 的坑
 
-```language-javascript
+```javascript
 function Foo () {
   if ( typeof new.target !== "undefined" ) {
     console.log( 'good' );  // using new
@@ -188,14 +190,14 @@ foo = Foo.call( foo );  // error!
 
 > 跟普通函数一样拥有 name 属性
 
-```language-javascript
+```javascript
 var foo = value => value;  // input value, output value
 var foo = () => {};
 var foo = ( x, y ) => x + y;
 var foo = id => ({ x: 'x' });
 ```
 
-```language-javascript
+```javascript
 // this 的绑定
 var foo = {
   init: function () {
@@ -217,7 +219,7 @@ var foo = {
 
 ###立即调用函数表达式（Immediately-Invoked Function Expressions (IIFEs)）
 
-```language-javascript
+```javascript
 let foo = function ( s ) {
   console.log( s );
 }( 'text' )  // text
@@ -236,7 +238,7 @@ let foo = ( s => {
 
 ###对象字面属性值简写（Property Initializer Shorthand）
 
-```language-javascript
+```javascript
 function foo ( text ) {
   return {
     name  // name: name
@@ -246,7 +248,7 @@ function foo ( text ) {
 
 ###对象方法简写（Method Initializer Shorthand）
 
-```language-javascript
+```javascript
 var foo = {
   bar () {}
 }
@@ -256,7 +258,7 @@ var foo = {
 
 对象的属性可以使用中括号 `[]` 表示需要「被计算」，结果转换为字符串作为属性名使用。
 
-```language-javascript
+```javascript
 let a = function () {}
 let foo = {
   a: 'text a',
@@ -270,7 +272,7 @@ console.log( foo[a] )  // function a
 
 和经典的 `===` 几乎一样，区别在于：
 
-```language-javascript
+```javascript
 console.log( +0 === -0);             // true
 console.log( Object.is( +0, -0 ) );     // false
 
@@ -280,7 +282,7 @@ console.log( Object.is( NaN, NaN ) );   // true
 
 ###Object.assign()
 
-```language-javascript
+```javascript
 Object.assign( target, ...source )
 ```
 
@@ -309,7 +311,7 @@ Object.assign( target, ...source )
 <a name="destructuring"></a>
 ##解构（Destructuring）[↑](#catalogue)
 
-```language-javascript
+```javascript
 var {a, b} = c
 var [a, [b, c]] = d
 ```
@@ -317,7 +319,7 @@ var [a, [b, c]] = d
 <a name="symbols"></a>
 ##Symbols（不知道如何翻译，是第七种原始类型）[↑](#catalogue)
 
-```language-javascript
+```javascript
 var foo = Symbol()
 var foo = Symbol( 'bar' )
 ```
@@ -343,7 +345,7 @@ var foo = Symbol( 'bar' )
 
 生成迭代器的函数
 
-```language-javascript
+```javascript
 function *createIterator() {
   yield 1;
   yield 2;
@@ -372,7 +374,7 @@ let iterator = o.createIterator( [1, 2, 3] );
 
 Symbol.iterator 指向得到迭代器的函数
 
-```language-javascript
+```javascript
 let values = [1, 2, 3];
 let iterator = values[Symbol.iterator]();
 iterator.next();  // 1
@@ -380,7 +382,7 @@ iterator.next();  // 1
 
 ###自定义迭代器
 
-```language-javascript
+```javascript
 let collection = {
   items: [],
   *[Symbol.iterator]() {
@@ -409,7 +411,7 @@ let collection = {
 
 ###向迭代器传参数
 
-```language-javascript
+```javascript
 function *foo () {
   let bar = yield 1;
 }
@@ -424,7 +426,7 @@ console.log( it.next() )  // Object {value: undefined, done: true}
 
 ###生成器使用 return 提前返回
 
-```language-javascript
+```javascript
 function *createIterator() {
   yield 1;
   return 42;
@@ -442,7 +444,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 使用 `yield *`
 
-```language-javascript
+```javascript
 function *createNumberIterator() {
   yield 1;
   yield 2;
@@ -472,7 +474,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 可以 `yield *"string"`，会调用字符串的默认迭代器
 
-```language-javascript
+```javascript
 function *foo () {
   yield * "hello"
 }
@@ -485,7 +487,7 @@ console.log( it.next() )  // Object {value: "e", done: false}
 
 以下是书中的例子，写得并不好，变量 `task` 的管理容易出问题：
 
-```language-javascript
+```javascript
 var fs = require("fs");
 
 var task;
@@ -515,7 +517,7 @@ task.next();
 
 ###类声明
 
-```language-javascript
+```javascript
 class foo {
   // 相当于构造函数
   constructor ( name ) {
@@ -540,17 +542,17 @@ class foo {
 
 ###类表达式
 
-```language-javascript
+```javascript
 let foo = class {}
 ```
 
-```language-javascript
+```javascript
 let foo = class foo2 {}  // foo === foo2
 ```
 
 匿名类作为参数
 
-```language-javascript
+```javascript
 function createFoo ( c ) {
   return new c()
 }
@@ -564,7 +566,7 @@ createFoo( class {
 
 立即调用类表达式（有点像立即调用函数表达式）
 
-```language-javascript
+```javascript
 let foo = new class {
   constructor ( name ) {
     this.name = name
@@ -574,7 +576,7 @@ let foo = new class {
 
 ###存取器属性
 
-```language-javascript
+```javascript
 class foo {
   constructor ( name ) {
     this.name = name
@@ -592,7 +594,7 @@ class foo {
 
 ###静态成员
 
-```language-javascript
+```javascript
 class foo {
   constructor ( name ) {
     this.name = name
@@ -621,7 +623,7 @@ class foo {
 
 比起 ECMAScript5，ECMAScript6 的派生方便了很多
 
-```language-javascript
+```javascript
 class Rectangle {
   constructor ( length, width ) {
     this.length = length;
@@ -642,7 +644,7 @@ class Square extends Rectangle {
 
 在派生类的构造函数中，调用 `super` 是必须的。如果连构造函数都没有，则：
 
-```language-javascript
+```javascript
 class Square extends Rectangle {
   // 无构造函数
 }
@@ -659,13 +661,208 @@ class Square extends Rectangle {
 > 1. 使用 `this` 前必先调用 `super()` 来**初始化** `this`
 > 1. 只有在构造函数返回一个对象的时候才可以不用 `super()`
 
+###类方法
 
+覆盖、隐藏父类方法
+
+```javascript
+class Square extends Rectangle {
+  constructor ( length ) {
+    super( length, length );
+  }
+  getArea () {
+    return this.length * this.length;
+  }
+}
+```
+
+仍然可以使用 `super` 调用父类方法
+
+```javascript
+class Square extends Rectangle {
+    constructor ( length ) {
+        super( length, length );
+    }
+    getArea () {
+        return super.getArea();
+    }
+}
+```
+
+类方法没有 `[[Construct]]` 这个内部方法，所以不能被 `new`。（[什么是`[[Construct]]`](http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2)）
+
+###静态成员
+
+相当于 ES5 中定义在构造函数上的方法（注意不是定义在构造函数的原型上），派生类显然也能调用
+
+###extends 关键字后面可以使用表达式
+
+除了 `null` 和生成器函数外
+
+```javascript
+// 使用函数
+function base () {}
+class foo extends base {}
+
+// 使用表达式
+function base () {}
+function getBase () {
+  return base
+}
+class foo extends getBase() {}
+
+// 混合模式（多继承？!）
+let AMinin = {
+  aF = function () {}
+}
+let BMinin = {
+  bF = function () {}
+}
+function mixin ( ...mixins ) {
+  var base = function () {}
+  Object.assign( base.prototype, ...mixins )
+  return base
+}
+class foo extends mixin( AMinin, BMinin ) {}
+
+// 内置类型
+class foo extends Array {}
+class foo extends String {}
+```
+
+###new.target
+
+能够得知类的调用状态，应用例如：阻止抽象类被实例化
+
+```javascript
+class Shape {
+  constructor() {
+    if (new.target === Shape) {
+      throw new Error("This class cannot be instantiated directly.")
+    }
+  }
+}
+```
 
 <a name="promises"></a>
 ##Promises[↑](#catalogue)
 
+Promise 是老朋友了，所以没有什么好记录的，就记一下语法。
+
+```javascript
+let p1 = new Promise( function ( resolve, reject ) {
+    resolve( 42 );
+});
+
+let p2 = Promise.resolve( 42 );
+
+let p3 = Promise.reject( 43 );
+
+let p4 = Promise.all( [p1, p2, p3] );  // 等待所有 Promise 返回
+
+let p5 = Promise.race( [p1, p2, p3] );  // 最快的一个 Promise 返回就返回
+
+p4.then( function ( value ) {
+    console.log( value );
+}).catch( function ( value ) {
+    console.log( value );
+})
+```
+
 <a name="modules"></a>
 ##模块（Modules）[↑](#catalogue)
 
+> 注：本章的代码似乎有一些问题，基本参考 MDN 为准
+
+1. 模块中的代码自动以严格模式运行
+1. 模块中的顶层变量只是模块中顶层，并非全局顶层
+1. 顶层中的 `this` 的值为 `undefined`
+1. 代码中不允许 HTML 风格的注释
+1. 模块必须有导出的东西
+
+###基本导入导出
+
+直接使用原书代码：
+
+```javascript
+// 导出数据
+export var color = "red";
+export let name = "Nicholas";
+export const magicNumber = 7;
+
+// 导出函数
+export function sum(num1, num2) {
+    return num1 + num1;
+}
+
+// 导出类
+export class Rectangle {
+    constructor(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+}
+
+// 导出引用
+function multiply(num1, num2) {
+    return num1 * num2;
+}
+export multiply;
+
+// 默认导出
+export default function () {
+    return;
+}
+
+// export as
+export { multiply as foo }
+```
+
+1. 除非使用 `default` 语法，否则函数和类都不能使用匿名
+1. `export` 只能用在顶层中
+
+`as` 和 `default` 语法的情况，给出一个来自 [2ality](http://www.2ality.com/2015/07/es6-module-exports.html) 的表格
+
+|Statement                      |Local name  |Export name|
+|-------------------------------|------------|-----------|
+|export {v as x};               | 'v'        | 'x'       |
+|export default function f() {} | 'f'        | 'default' |
+|export default function () {}  | '*default*'| 'default' |
+|export default 123;            | '*default*'| 'default' |
+
+可以看出，所谓的默认导出其实就是用了 `default` 作为名字罢了。
+
+还能够将其他模块重新导出
+
+|Statement                  | Module|Import name|Export name|
+|---------------------------|-------|-----------|-----------|
+|export {v} from 'mod';     |'mod'  |'v'        |'v'        |
+|export {v as x} from 'mod';|'mod'  |'v'        |'x'        |
+|export * from 'mod';       |'mod'  |'*'        |null       |
+
+导入有很多方法，基本使用到的其实只有几种，以下来自 MDN：
+
+```javascript
+import name from "module-name";
+import * as name from "module-name";
+import { member } from "module-name";
+import { member as alias } from "module-name";
+import { member1 , member2 } from "module-name";
+import { member1 , member2 as alias2 , [...] } from "module-name";
+import defaultMember, { member [ , [...] ] } from "module-name";
+import defaultMember, * as alias from "module-name";
+import defaultMember from "module-name";
+import "module-name";
+```
+
+最后那种导入是相当于将代码执行了一次。通常可以用来做 `polyfills` 和 `shims`。
+
 <a name="miscellaneous"></a>
 ##杂七杂八[↑](#catalogue)
+
+`Number.isInteger`，判断整数
+
+`Number.isSafeInteger`，判断是否是有效整数
+
+Math 中加入很多函数，例如双曲正弦、双曲余弦之类的
+
