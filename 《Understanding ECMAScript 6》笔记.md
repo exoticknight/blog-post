@@ -312,8 +312,28 @@ Object.assign( target, ...source )
 ##解构（Destructuring）[↑](#catalogue)
 
 ```javascript
-var {a, b} = c
+var {a, b: { c, d }} = c
+( {a, b: { c, d }} = c )
+
 var [a, [b, c]] = d
+var [a, , [b, c]] = d  // 跳过一个
+
+function foo ( { bar1, bar2 } = {} ) {
+  ;
+}
+```
+
+解构可以有默认值，但只会在需要的时候求值。
+
+[2ality](http://www.2ality.com/2015/01/es6-destructuring.html) 有更详细清晰的解释：
+
+```javascript
+let {prop: y=someFunc()} = someValue;
+
+let x, y;
+[x=3, y=x] = [];     // x=3; y=3
+[x=3, y=x] = [7];    // x=7; y=7
+[x=3, y=x] = [7, 2]; // x=7; y=2
 ```
 
 <a name="symbols"></a>
