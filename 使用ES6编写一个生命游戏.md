@@ -3,6 +3,8 @@
 
 > [GitHub 地址](https://github.com/exoticknight/gol.js)
 
+![gif](https://i.imgur.com/fLKUaVL.gif)
+
 ##缘起
 
 前段时间看了《Understanding ECMAScript 6》，因为有 JavaScript 的基础，很快就上手了，还写了[笔记](http://blog.e10t.net/understanding-ecmascript6-note/)。然而编程只看书是不够的，还需要让身体熟悉起来。刚好最近在看「全部成为F」这部新番，看到 ED 采用了「生命游戏」的表现形式，于是便有了用 ES6 来写一个的主意。
@@ -624,7 +626,7 @@ exports.output.filename = exports.output.filename.replace(/\.js$/, ".min.js");
 
 通过将匿名函数的引用保存起来就能解绑了。
 
-最后给个 demo 吧。
+最后给个 demo 吧。或者玩玩[在线 demo](https://exoticknight.github.io/gol.js/)
 
 ```markup
 <!DOCTYPE html>
@@ -633,8 +635,6 @@ exports.output.filename = exports.output.filename.replace(/\.js$/, ".min.js");
   <meta charset="UTF-8">
   <title>Game of Life</title>
   <script src="dist/bundle.js"></script>
-  <script>
-</script>
 </head>
 <body>
   <canvas id="grid" width="1000" height="500" style="border:1px solid"></canvas>
@@ -666,5 +666,3 @@ function test(){
 </body>
 </html>
 ```
-
-[在线 demo](https://exoticknight.github.io/gol.js/)
