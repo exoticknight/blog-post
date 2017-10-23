@@ -39,7 +39,7 @@ for (var i=0, len=arr.length; i<len; i++) {
 
 > 强烈建议使用 `const` 或 `let` 声明变量而不是使用 `var`，因为 `var` 会在 `for` 语句外声明变量，结果就是变量可能会在意外的地方被读取到。如果你不能使用 ES2015 或更新的版本，下文同样有解决方法（同样是本文的主要内容）。
 
-如果你写过 C 系列，那么你有可能忍不住自己的麒麟臂，写出「炫技」的代码来。比如 MDN 上的[这个例子][for-on-mdn]。
+如果你写过 C 系列，那么你有可能忍不住自己的麒麟臂，写出「炫技」的代码来。比如 MDN 上的[这个例子][for-on-mdn]。
 
 ```javascript
 function showOffsetPos(sId) {
@@ -70,7 +70,7 @@ showOffsetPos('content');
 // top: 153px;"
 ```
 
-这么写看着很酷，但是实际上不要这样写，尤其是在团队合作中。这样的代码一是混杂难懂，二是难以维护。代码首先是写给人看的，接着才是给机器运行的。
+这么写看着很酷，但是实际上不要这样写，尤其是在团队合作中。这样的代码一是混杂难懂，二是难以维护。代码首先是写给人看的，接着才是给机器运行的。
 
 或许你已经非常习惯写 `for` 了，习惯到了看见一个数组就自然而然打出 `for (...)` 来。但是你有没有想过，很多时候，遍历数组其实跟索引并没有什么关系，代码只是要将数组里面的元素按顺序处理完。然而，**数组天然就应该是顺序的**，根本无需要一个额外的 `i` 来保证。换句话说，数组应该利用自身属性，提供无需索引的顺序读取方法，而索引只是在顺序读取的过程中的一个记录变量。
 
@@ -86,7 +86,7 @@ showOffsetPos('content');
 
 ## 优雅的 forEach, map, filter, reduce
 
-![forEach,map,filter,reduce](https://i.imgflip.com/i/1y3h2m.jpg)
+![forEach,map,filter,reduce](https://i.imgflip.com/1y3h2m.jpg)
 
 在 ES5（ES5.1） 中，JavaScript 新增了多个数组方法，包括：forEach, map, filter, reduce。
 
