@@ -4,7 +4,7 @@
 
 ## 老黄牛的 for
 
-![for-for-everywhere](https://imgflip.com/i/1y3pxa)
+![for-for-everywhere](https://i.imgflip.com/1y3pxa.jpg)
 
 几乎每一个编程语言都有 `for`，JavaScript 也不例外。
 
@@ -86,7 +86,7 @@ showOffsetPos('content');
 
 ## 优雅的 forEach, map, filter, reduce
 
-![forEach,map,filter,reduce](https://imgflip.com/i/1y3h2m)
+![forEach,map,filter,reduce](https://i.imgflip.com/i/1y3h2m.jpg)
 
 在 ES5（ES5.1） 中，JavaScript 新增了多个数组方法，包括：forEach, map, filter, reduce。
 
