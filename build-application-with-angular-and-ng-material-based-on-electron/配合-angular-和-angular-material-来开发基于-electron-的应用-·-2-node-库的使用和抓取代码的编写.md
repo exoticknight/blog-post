@@ -1,11 +1,18 @@
-配合 angular 和 angular-material 来开发基于 electron 的应用 · 2--node 库的使用和抓取代码的编写
-=====================================
+---
+title: 配合 angular 和 angular-material 来开发基于 electron 的应用 · 2--node 库的使用和抓取代码的编写
+categories:
+  - [技术, electron]
+  - [编程语言, javascript]
+tags: [javascript, angularjs, angular-material, electron]
+permalink: build-application-with-angular-and-ng-material-based-on-electron-2-use-node-lib-and-code
+id: 44
+updated: '2015-09-05 17:10:41'
+date: 2015-06-29 16:11:33
+---
 
-![thumbnail](https://i.imgur.com/kvb5CTf.png)
+## 使用 nodejs 的库
 
-##使用 nodejs 的库
-
-python 脚本的详细编写，请看之前的博文：[radioit计划——动画广播辅助脚本radioitScript][1]。
+python 脚本的详细编写，请看之前的博文：[radioit 计划——动画广播辅助脚本 radioitScript][1]。
 
 需要用 node 实现脚本中的某些逻辑是获取和提取广播的信息，整合成 JSON 格式的数据。
 
@@ -13,7 +20,7 @@ python 脚本的详细编写，请看之前的博文：[radioit计划——动�
 
 [1]: http://blog.e10t.net/radioit-plan-animate-radio-script-radioitscript/
 
-###superagent
+### superagent
 
 [superagent][superagent] 是一个极其简单的 AJAX 库。
 
@@ -33,7 +40,7 @@ request
 
 [superagent]: https://github.com/visionmedia/superagent
 
-###bluebird
+### bluebird
 
 [bluebird][bluebird] 是一个 Promise 库。
 
@@ -63,7 +70,7 @@ request
 [bluebird]: https://github.com/petkaantonov/bluebird/
 [superagent-bluebird-promise]: https://github.com/KyleAMathews/superagent-bluebird-promise
 
-###cherrio
+### cherrio
 
 [cheerio][cheerio] 是一个语法类似 jQuery，为服务端提供 jQuery 核心功能的库。这里用到的是它的 CSS 选择器功能。
 
@@ -108,7 +115,7 @@ request
     });
 ```
 
-##编写逻辑
+## 编写逻辑
 
 > npm 安装库的过程略。
 
@@ -166,7 +173,7 @@ request
 
 有了输出的数据格式，抓取信息的时候就能有的放失。
 
-以[響 - HiBiKi Radio Station -][響 - HiBiKi Radio Station -]为例。因为在之前编写脚本的时候已经得到了页面上信息的位置，所以可以直接应用在代码中。
+以 [響 - HiBiKi Radio Station -][響 - HiBiKi Radio Station -] 为例。因为在之前编写脚本的时候已经得到了页面上信息的位置，所以可以直接应用在代码中。
 
 ```javascript
 // 一些固定的信息和变量
@@ -243,7 +250,7 @@ var hibiki = {
                 return data;
 
             }, function ( err ) {
-                console.log( 'hibiki:get catalogue error: ' + err );
+                console.log( 'hibiki:get catalogue error:' + err );
                 throw new Error( err );
             });
     }
@@ -283,8 +290,7 @@ var hibiki = {
                         return text;
                     })(),
                     'update': $( '.hbkDescriptonContents' ).eq( -1 ).prev().prev().find( 'span' ).eq( 0 ).text(),
-                    'personality': $( 'table.hbkTextTable td:nth-of-type(1) > table table td:nth-of-type(2n) a' ).map( function () {return $( this ).text();} ).get().join( ' ' ),
-                    'guest': '',
+                    'personality': $( 'table.hbkTextTable td:nth-of-type(1) > table table td:nth-of-type(2n) a' ).map( function () {return $( this ).text();} ).get().join( '' ),'guest':'',
                     'images': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(3) table:nth-of-type(2) td img' ).map( function () {return $( this ).attr( 'src' );}).get(),
                     'audio': $( 'div.hbkDescriptonContents embed' ).eq( -1 ).attr( 'src' )
                 };
@@ -292,7 +298,7 @@ var hibiki = {
                 return data;
 
             }, function ( err ) {
-                console.log( 'hibiki:get bangumi error: ' + err );
+                console.log( 'hibiki:get bangumi error:' + err );
                 throw new Error( err );
             });
     },
@@ -312,11 +318,11 @@ module.exports = hibiki;
 
 [響 - HiBiKi Radio Station -]: http://hibiki-radio.jp
 
-###整合
+### 整合
 
 对于取数据的调用者而言，是无需理会数据从哪来的，只需要知道使用什么 API 就够了。
 
-再者，既然有“整合”之名，就要行“整合”之实。因此要将这三个或者日后出现的更多个广播站提取代码整合起来，只提供一个调用入口。
+再者，既然有 “整合” 之名，就要行 “整合” 之实。因此要将这三个或者日后出现的更多个广播站提取代码整合起来，只提供一个调用入口。
 
 新建目录 `provider`，将三个广播站的脚本都放进去。
 

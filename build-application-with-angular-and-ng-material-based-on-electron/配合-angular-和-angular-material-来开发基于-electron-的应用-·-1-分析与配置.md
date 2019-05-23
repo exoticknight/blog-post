@@ -1,13 +1,22 @@
-配合 angular 和 angular-material 来开发基于 electron 的应用 · 1--分析与配置
-=====================================
+---
+title: 配合 angular 和 angular-material 来开发基于 electron 的应用 · 1-- 分析与配置
+categories:
+  - [技术, electron]
+  - [编程语言, javascript]
+tags: [javascript, angularjs, angular-material, electron]
+permalink: build-application-with-angular-and-ng-material-based-on-electron-1-analyze-and-configuration
+id: 43
+updated: '2015-09-05 17:11:13'
+date: 2015-06-13 19:32:07
+---
 
 ![thumbnail](https://i.imgur.com/kvb5CTf.png)
 
-> [应用github地址](https://github.com/radioit/radioit-desktop)。github 代码和文章代码并不同步，用作预览和 PR。
+> [应用 github 地址](https://github.com/radioit/radioit-desktop)。github 代码和文章代码并不同步，用作预览和 PR。
 
-##目标分析
+## 目标分析
 
-一句话概述：开发的应用是一个抓取网页有用信息并重新统一排布的应用，是[之前文章][1]提到的 radioit 计划里脚本的 GUI 版本。
+一句话概述：开发的应用是一个抓取网页有用信息并重新统一排布的应用，是 [之前文章][1] 提到的 radioit 计划里脚本的 GUI 版本。
 
 关键词：网页抓取、信息统一、信息排布、脚本的 GUI 版本
 
@@ -40,18 +49,18 @@
 
 [1]: http://blog.e10t.net/radioit-plan-animate-radio-script-radioitscript/
 
-##技术分析
+## 技术分析
 
 技术要点：
 
 1. node.js(io.js)，负责网络连接，网页内容解析提取，非浏览器环境因此能够进行跨域访问
-1. angular，MVVM框架，自动进行数据的渲染
+1. angular，MVVM 框架，自动进行数据的渲染
 1. angular material，angular 推出的 material design UI 框架，适合作为桌面应用使用
 1. stylus，CSS 预处理器，合理直观的 CSS 编写格式
 
 脑内讨论
 
-* Q：为什么使用Electron？
+* Q：为什么使用 Electron？
 * A：Electron 有意思地使用了 `main` 进程和 `render` 进程，`render` 进程产生于 `main` 进程中，因此可以简单地产生多个 `render` 进程，也就是多窗口。这是一个优势。
 
 * Q：不用 angular，用 react 是否可以？
@@ -61,10 +70,10 @@
 * A：作为桌面应用，需要有一点时刻记住的是桌面应用跟网页是不一样的。桌面应用需要稳定的窗口，要有标题栏等清晰的组件，也不需要太花哨的特效。material design 或者受 material design 影响的一些简洁 UI 风格已经在某些桌面软件上应用开来。Electron 作为使用网页作为 GUI 表现，使用 material design 是个稳妥之举。
 
 * Q：为什么不用 SASS / LESS？
-* A：SASS 需要 Ruby，对非 Rubyer 是非常无理的要求，逻辑表现能力强大而无用（非常用）；LESS 语法简单，支持混写，但逻辑表现力太弱。stylus则是既有强有力的特性，也足够简单。有时，工具够用就行。参考：[Why I Choose Stylus (And You Should Too)][3]
+* A：SASS 需要 Ruby，对非 Rubyer 是非常无理的要求，逻辑表现能力强大而无用（非常用）；LESS 语法简单，支持混写，但逻辑表现力太弱。stylus 则是既有强有力的特性，也足够简单。有时，工具够用就行。参考：[Why I Choose Stylus (And You Should Too)][3]
 
 * Q：node 和页面中的 angular 如何沟通？
-* A：`main` 进程和 `reander` 进程有特定的模块进行通信。`render`进程能通过页面中的全局变量和 angular 进行通讯。
+* A：`main` 进程和 `reander` 进程有特定的模块进行通信。`render` 进程能通过页面中的全局变量和 angular 进行通讯。
 
 * Q：为什么要使用 node 的库来处理网页请求和内容提取？angular 自带有 $http 不是更方便？
 * A：如此一来，就能各自开发。node 只需要管如何得到数据，angular 只需要管如何显示数据。另外，如果需要更改 GUI，那么只需要去掉 angular，换上其他 UI 框架就可以，数据生成不受任何印象。只是如此开发需要更多的精力。
@@ -73,14 +82,14 @@
 
 [3]: http://webdesign.tutsplus.com/articles/why-i-choose-stylus-and-you-should-too--webdesign-18412
 
-##开发配置
+## 开发配置
 
-###NPM 配置
+### NPM 配置
 
 node.js 的安装是必须的，不多介绍。安装完自带 npm 管理工具。
 
 用的最多的 node 命令：
-```language-bash
+```bash
 npm i xxx -g
 npm i xxx --save
 npm u xxx --save
@@ -97,7 +106,7 @@ npm update
 
 以下是 `package.json` 文件的暂时内容。
 
-```language-javascript
+```javascript
 // package.json
 {
   "name": "Radioit",
@@ -135,11 +144,11 @@ npm update
 
 暂时并没有太多的东西，注意要开发基于 Electron 应用，`electron-packager` 和 `electron-prebuilt` 必不可少，一个是 Electron 的打包工具，一个是 Electron 运行环境。而 `silence-chromium` 则是将 chromium 控制台信息输出到系统终端的工具。其他的工具都是博主开发过程中精选过的工具，还请读者自行 Google 之来学习。
 
-如果你看过本博客之前的一篇文章：[i18n.js库的编写兼使用npm辅助开发][4]，就知道博主是能用 npm 就不用 gulp / grunt 的，因此在 `scripts` 字段中也写上了运行的脚本。
+如果你看过本博客之前的一篇文章：[i18n.js 库的编写兼使用 npm 辅助开发][4]，就知道博主是能用 npm 就不用 gulp / grunt 的，因此在 `scripts` 字段中也写上了运行的脚本。
 
 [4]: http://blog.e10t.net/write-i18n-js-with-help-of-npm-as-build-tool/
 
-###angularjs 配置
+### angularjs 配置
 
 angular 的版本比较稳定，因此直接用 `bower` 来获取，不推荐其他包管理工具。
 
@@ -147,7 +156,7 @@ angular 的版本比较稳定，因此直接用 `bower` 来获取，不推荐其
 
 angular 的安装在下一节中。
 
-###angular material 配置
+### angular material 配置
 
 对于 `bower` 来说，angular material 跟 angular 是一样的东西，只是后者是前者的依赖。
 
@@ -155,7 +164,7 @@ angular 的安装在下一节中。
 
 安装完后所有文件会在项目目录下的 `bower_components` 中找到。
 
-###Electron 配置
+### Electron 配置
 
 具体参考：[Quick Start][5]
 
@@ -163,7 +172,7 @@ angular 的安装在下一节中。
 
 准备好文件结构。
 
-```language-markup
+```markup
 app/
 ├── package.json
 ├── main.js
@@ -172,9 +181,9 @@ app/
 
 [5]: https://github.com/atom/electron/blob/master/docs/tutorial/quick-start.md
 
-###初始程序
+### 初始程序
 
-```language-javascript
+```javascript
 var BrowserWindow = require( 'browser-window' );  // Module to create native browser window.
 var ipc = require( 'ipc' );
 var path = require( 'path' );
@@ -228,7 +237,7 @@ function appReady () {
 
 博主写的 `main.js` 和 quick start 中的有所不同。在新建 `mainWindow` 的时候，加入了其他参数 `show: false` 和 `resizable: false`，分别是隐藏窗口和窗口不可拉伸。也增加了一个：
 
-```language-javascript
+```javascript
     mainWindow.webContents.on( 'did-finish-load', function () {
         mainWindow.show();
     });

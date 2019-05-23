@@ -1,4 +1,11 @@
-# 不要再只会用 for 了
+---
+title: 不要再只会用 for 了
+categories:
+  - [技术, 前端]
+  - [编程语言, javascript]
+tags: [javascript, bytalk]
+permalink: dont-only-use-for-any-more
+---
 
 > No Silver Bullet
 
@@ -54,7 +61,7 @@ function showOffsetPos(sId) {
 
     nLeft += oItNode.offsetLeft, nTop += oItNode.offsetTop, oItNode = oItNode.offsetParent /* final-expression */
 
-  ); /* semicolon */ 
+  ); /* semicolon */
 
   console.log('Offset position of \'' + sId + '\' element:\n left: ' + nLeft + 'px;\n top: ' + nTop + 'px;');
 

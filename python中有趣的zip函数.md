@@ -1,5 +1,14 @@
-python中有趣的zip函数
-====================
+---
+title: python中有趣的zip函数
+categories:
+  - [技术, 杂谈]
+  - [编程语言, python]
+tags: [python]
+permalink: python-interesting-function-zip
+id: 21
+updated: '2014-08-03 22:00:38'
+date: 2014-08-03 21:50:14
+---
 
 懂python的都知道有一个内置函数zip，作用是将多个序列里面的对应组合起来。
 

@@ -1,28 +1,37 @@
-使用ES6编写一个生命游戏
-==============================
+---
+title: 使用 ES6 编写一个生命游戏
+categories:
+  - [技术, 前端]
+  - [编程语言, javascript]
+tags: [javascript, ECMAScript6]
+permalink: write-a-game-of-life-using-es6
+id: 49
+updated: '2015-11-27 12:31:33'
+date: 2015-11-27 00:38:57
+---
 
 > [GitHub 地址](https://github.com/exoticknight/gol.js)
 
 ![gif](https://i.imgur.com/fLKUaVL.gif)
 
-##缘起
+## 缘起
 
-前段时间看了《Understanding ECMAScript 6》，因为有 JavaScript 的基础，很快就上手了，还写了[笔记](http://blog.e10t.net/understanding-ecmascript6-note/)。然而编程只看书是不够的，还需要让身体熟悉起来。刚好最近在看「全部成为F」这部新番，看到 ED 采用了「生命游戏」的表现形式，于是便有了用 ES6 来写一个的主意。
+前段时间看了《Understanding ECMAScript 6》，因为有 JavaScript 的基础，很快就上手了，还写了 [笔记](http://blog.e10t.net/understanding-ecmascript6-note/)。然而编程只看书是不够的，还需要让身体熟悉起来。刚好最近在看「全部成为 F」这部新番，看到 ED 采用了「生命游戏」的表现形式，于是便有了用 ES6 来写一个的主意。
 
-##「生命游戏」
+## 「生命游戏」
 
-「生命游戏」的英文原文是「Game of Life」，是细胞自动机的一种形式，每个细胞的未来状态只取决于以其为中心周围八格细胞的当前状态。更详细的信息请看[wiki条目](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)，给出一个有意思的动画图。
+「生命游戏」的英文原文是「Game of Life」，是细胞自动机的一种形式，每个细胞的未来状态只取决于以其为中心周围八格细胞的当前状态。更详细的信息请看 [wiki 条目](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)，给出一个有意思的动画图。
 
-![gif动画图](https://upload.wikimedia.org/wikipedia/commons/e/e5/Gospers_glider_gun.gif)
+![gif 动画图](https://upload.wikimedia.org/wikipedia/commons/e/e5/Gospers_glider_gun.gif)
 
 而状态判断只有四条：
 
-1. 当前细胞为存活状态时，当周围低于2个（不包含2个）存活细胞时， 该细胞变成死亡状态。（模拟生命数量稀少）
-1. 当前细胞为存活状态时，当周围有2个或3个存活细胞时， 该细胞保持原样。
-1. 当前细胞为存活状态时，当周围有3个以上的存活细胞时，该细胞变成死亡状态。（模拟生命数量过多）
-1. 当前细胞为死亡状态时，当周围有3个存活细胞时，该细胞变成存活状态。 （模拟繁殖）
+1. 当前细胞为存活状态时，当周围低于 2 个（不包含 2 个）存活细胞时， 该细胞变成死亡状态。（模拟生命数量稀少）
+1. 当前细胞为存活状态时，当周围有 2 个或 3 个存活细胞时， 该细胞保持原样。
+1. 当前细胞为存活状态时，当周围有 3 个以上的存活细胞时，该细胞变成死亡状态。（模拟生命数量过多）
+1. 当前细胞为死亡状态时，当周围有 3 个存活细胞时，该细胞变成存活状态。 （模拟繁殖）
 
-###算法思考
+### 算法思考
 
 假设有一个棋盘，每一个格子代表一个细胞。在每一次生成下一代细胞，先遍历每一个细胞，查询它周围八格细胞的状态，设置本细胞下一代的状态。
 
@@ -33,8 +42,8 @@
 于是算法能描述如下：
 
 ```markup
-1)在某一次生成本次状态中，有将改变状态的细胞集合 S
-2)遍历集合 S，对于细胞 i：
+1) 在某一次生成本次状态中，有将改变状态的细胞集合 S
+2) 遍历集合 S，对于细胞 i：
     改变细胞 i 的状态
     细胞 i 的活邻居数置零
     遍历 8 个邻居细胞，对于邻居细胞 j：
@@ -47,15 +56,15 @@
 3)S = S'，重复 1)、2)
 ```
 
-##ES6 写起来
+## ES6 写起来
 
 ES6 中有 class 的概念，虽然实现方式其实就是 function 和原型，但是在写的时候就不用像以前用「模拟」的手段来编写啦。
 
-###基本对象
+### 基本对象
 
 基本来说，分三个主要对象：提供算法的 class Life，提供单元格绘制的 class Grid，提供 DOM 动画控制的 class Game。Game 从算法中得到需要重绘的单元格，通过 Grid 来绘制单元格。
 
-###class Life
+### class Life
 
 已经有算法描述了，写起来并不复杂。新建一个 `life.js` 文件，导出 `Life` 类。
 
@@ -209,7 +218,7 @@ export default class Life {
 
 其他函数可以在 GiiHub 查看。
 
-###class Grid
+### class Grid
 
 确定使用 `HTML5` 中的 `Canvas` 元素来绘制整个世界（棋盘），`Canvas` 元素的操作使用另一个类 `C`，后面再写。
 
@@ -284,7 +293,7 @@ export default class C {
 }
 ```
 
-###class Game
+### class Game
 
 不复杂，直接看代码吧。
 
@@ -359,7 +368,7 @@ export default class Game {
 
 `step` 方法是迭代一步，`run` 方法就是用 `setTimeout` 来循环调用 `step` 了。在 `run` 方法中使用了箭头函数来隐含设定了 `this` 的值，ES6 的优势就体现出来了。
 
-###gol.js
+### gol.js
 
 整个程序的主体是 Game 的实例，然而还是需要有人去创造一个实例出来，也就是说需要一个工厂函数。于是，新建 `gol.js` 文件，导出 `GOL` 类。里面写一个静态方法，用作创建 Game 实例的工厂方法。
 
@@ -389,7 +398,7 @@ export default class GOL {
 
 不过在 `createGame` 方法上就不要用 ES6 的语法了，因为方法是要在页面上调用的，目前还没有哪个浏览器完全支持 ES6。但是在方法里面用是没问题的，因为编译器会帮我们转换好。于是可以看到方法里面直接用 `Object.assign( des, src )` 的函数来合并参数，类似 jQuery 的 `extends` 函数。
 
-###boot.js
+### boot.js
 
 到此还没完，回忆一下在写普通 JavaScript 库的时候，我们通常会直接包裹上一层适应各种环境的模块注册代码，本人最喜欢就是直接使用 [UMD](https://github.com/umdjs/umd) 了。
 
@@ -413,13 +422,13 @@ import GOL from './gol.js';
 });
 ```
 
-##代码打包
+## 代码打包
 
 OK，到此代码基本写好了，然而到在浏览器上执行还是有一段距离，主要是基本没有浏览器默认支持 ES6，我们还是需要将 ES6 的代码编译一下以便能放到浏览器上运行。比较有名的编译器就是 [Babel](https://github.com/babel/babel) 和 Google 的 [Traceur](https://github.com/google/traceur-compiler) 了。在编译的同时，还需要将所有文件打包成 bundle。
 
 在进行了各种尝试之后（包括主流的 npm / browserify / jspm 等），最后发现使用 `webpack` 和 `Babel` 的结合是比较理想的。
 
-###配置
+### 配置
 
 先来把需要的东西都装上。
 
@@ -431,7 +440,7 @@ npm i --save-dev webpack babel babel-core babel-loader babel-preset-es2015
 > 而且每次开一个新的项目就要安装几十 MB 的重复东西实在无聊，npm 本身的树状依赖也是容易造成目录过深的情况。（据说新版 npm 有改善，但是不稳定）
 > 个人的解决方法是固定一个开发目录，代码随便迁移。
 
-###webpack.config.js
+### webpack.config.js
 
 `webpack` 我就不详细解释了。直接上 `webpack.config.js`。
 
@@ -457,7 +466,7 @@ module.exports = {
 };
 ```
 
-目前来说，这样写就能让 `Babel` 编译 ES6 的代码的同时，也运用 `webpack` 自己的打包功能**根据 ES6 的模块语法**将文件都打包成一个 bundle。
+目前来说，这样写就能让 `Babel` 编译 ES6 的代码的同时，也运用 `webpack` 自己的打包功能 ** 根据 ES6 的模块语法 ** 将文件都打包成一个 bundle。
 
 打包出来的代码有点大，压缩一下，再写一个 `webpack.config.min.js`。
 
@@ -472,13 +481,13 @@ exports.output.filename = exports.output.filename.replace(/\.js$/, ".min.js");
 
 就能用 `webpack` 自带的压缩插件压缩代码了。
 
-##添加功能
+## 添加功能
 
 算法、绘图和动画控制都写好了，但是还不够，缺少了交互，还应该允许方便的自定义世界中的活细胞。比较好的交互方式就是允许通过在世界（棋盘）点击来放置活细胞或者死细胞。
 
 于是考虑监听 `Canvas` 元素的 `mousedown`、`mousemove` 和 `mouseup` 事件，做出类似画图那样的效果（每个细胞可以看成是一个像素点）。
 
-###grid.js
+### grid.js
 
 先改造负责绘制的模块。
 
@@ -535,7 +544,7 @@ exports.output.filename = exports.output.filename.replace(/\.js$/, ".min.js");
   }
 ```
 
-###game.js
+### game.js
 
 类 `Game` 的修改有点复杂。先在类的构造函数中增加一个属性，负责记录鼠标状态。
 
@@ -626,7 +635,7 @@ exports.output.filename = exports.output.filename.replace(/\.js$/, ".min.js");
 
 通过将匿名函数的引用保存起来就能解绑了。
 
-最后给个 demo 吧。或者玩玩[在线 demo](https://exoticknight.github.io/gol.js/)
+最后给个 demo 吧。或者玩玩 [在线 demo](https://exoticknight.github.io/gol.js/)
 
 ```markup
 <!DOCTYPE html>
